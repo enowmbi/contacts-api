@@ -1,7 +1,7 @@
 module Api
   module V1
     class ContactsController < ApplicationController
-      before_action :set_contact, only: [:show, :update]
+      before_action :set_contact, only: [:show, :update, :destroy]
       def index
         contacts = Contact.all
         render json: contacts
@@ -16,7 +16,7 @@ module Api
         if contact.save!
           render json: contact, status: :created
         else
-          render json: contact.errors, status: :unprocessable_entity
+          render json: contact.errors.full_messages, status: :unprocessable_entity
         end
       end
 
@@ -24,7 +24,15 @@ module Api
         if @contact.update(contact_params)
           render json: @contact
         else
-          render json: @contact.errors, status: :unprocessable_entity
+          render json: @contact.errors.full_messages, status: :unprocessable_entity
+        end
+      end
+
+      def destroy
+        if @contact.destroy
+          head :no_content
+        else
+          render json: @contact.errors.full_messages, status: :unprocessable_entity
         end
       end
 
