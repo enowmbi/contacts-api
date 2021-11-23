@@ -1,7 +1,7 @@
 module Api
   module V1
     class ContactsController < ApplicationController
-      before_action :set_contact, only: [:show]
+      before_action :set_contact, only: [:show, :update]
       def index
         contacts = Contact.all
         render json: contacts
@@ -17,6 +17,14 @@ module Api
           render json: contact, status: :created
         else
           render json: contact.errors, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        if @contact.update(contact_params)
+          render json: @contact
+        else
+          render json: @contact.errors, status: :unprocessable_entity
         end
       end
 
