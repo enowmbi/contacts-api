@@ -1,8 +1,14 @@
 module Api
   module V1
     class ContactsController < ApplicationController
+      before_action :set_contact, only: [:show]
       def index
-        render json: Contact.all
+        contacts = Contact.all
+        render json: contacts
+      end
+
+      def show
+        render json: @contact
       end
 
       def create
@@ -15,6 +21,10 @@ module Api
       end
 
       private
+
+      def set_contact
+        @contact = Contact.find(params[:id])
+      end
 
       def contact_params
         params.require(:contact).permit(:name, :email)
