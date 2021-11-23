@@ -1,7 +1,13 @@
+# frozen_string_literal: true
+
 module Api
   module V1
+    # handles CRUD operations on contacts
     class ContactsController < ApplicationController
+      rescue_from ActiveRecord::RecordNotFound, with: :display_error_message_when_record_not_found
+
       before_action :set_contact, only: [:show, :update, :destroy]
+
       def index
         contacts = Contact.all
         render json: contacts
@@ -44,6 +50,10 @@ module Api
 
       def contact_params
         params.require(:contact).permit(:name, :email)
+      end
+
+      def display_error_message_when_record_not_found
+        render json: {error: "Contact with specified ID(#{params[:id]}) Not found"}, status: :not_found
       end
     end
   end
