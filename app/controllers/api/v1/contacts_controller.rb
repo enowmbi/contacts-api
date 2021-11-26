@@ -53,7 +53,7 @@ module Api
       end
 
       def display_error_message_when_record_not_found
-        render json: {error: "Contact with specified ID(#{params[:id]}) Not found"}, status: :not_found
+        render json: { error: "Contact with specified ID(#{params[:id]}) Not found" }, status: :not_found
       end
     end
   end
